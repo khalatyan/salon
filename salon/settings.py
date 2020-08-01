@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, 'modules'))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'zdahymt9&a5(bxa=)!n!nj5-i1+41@g$_5a9(!-6fmp*hj9jpa'
+SECRET_KEY = '...'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
@@ -125,3 +125,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+try:
+    from .base import *
+except:
+    print("Не удалось")
