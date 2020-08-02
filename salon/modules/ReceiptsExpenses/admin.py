@@ -8,6 +8,9 @@ from django.contrib import admin
 
 
 class SaveDataRP(admin.ModelAdmin):
+    model = ReceiveProducts
+    list_display = ['product_type', 'number', 'date']
+
     def save_model(self, request, obj, form, change):
         product = Products.objects.filter(product_type = obj.product_type)
         product = product.filter(number = obj.number)
@@ -22,8 +25,15 @@ class SaveDataRP(admin.ModelAdmin):
             new_product.save()
         else:
             product = product[0]
-            product.volume_rp = product.volume_rp + obj.volume * obj.quantity
-            product.volume = product.volume_rp - product.volume_sp
+            if (product.volume_rp):
+                product.volume_rp = product.volume_rp + obj.volume * obj.quantity
+            else:
+                product.volume_rp = obj.volume * obj.quantity
+
+            if (product.volume_sp):
+                product.volume = product.volume_rp - product.volume_sp
+            else:
+                product.volume = product.volume_rp
             product.save()
 
         super().save_model(request, obj, form, change)
@@ -31,6 +41,9 @@ class SaveDataRP(admin.ModelAdmin):
 admin.site.register(ReceiveProducts, SaveDataRP)
 
 class SaveDataSP(admin.ModelAdmin):
+    model = SpentProducts
+    list_display = ['product_type', 'number', 'date']
+
     def save_model(self, request, obj, form, change):
         product = Products.objects.filter(product_type = obj.product_type)
         product = product.filter(number = obj.number)
@@ -53,3 +66,6 @@ class SaveDataSP(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 admin.site.register(SpentProducts, SaveDataSP)
+
+
+

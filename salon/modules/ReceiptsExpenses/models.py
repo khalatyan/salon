@@ -15,7 +15,10 @@ class ReceiveProducts(models.Model):
         on_delete=models.PROTECT,
     )
 
-    number = models.IntegerField(
+    number = models.CharField(
+        null=True,
+        blank=True,
+        max_length=20,
         verbose_name="Номер продукта"
     )
 
@@ -31,7 +34,10 @@ class ReceiveProducts(models.Model):
     )
 
     def __str__(self):
-        return f'{self.product_type} {self.number} {self.date}'
+        if (self.number):
+            return f'{self.product_type} {self.number} {self.date}'
+        else:
+            return f'{self.product_type} {self.date}'
 
     class Meta:
         verbose_name = "Полученный товар"
@@ -45,9 +51,9 @@ def get_sentinel_user():
 class SpentProducts(models.Model):
 
     brand = models.ForeignKey(
-        Brands,
-        verbose_name='Бренд',
-        on_delete=models.PROTECT,
+            Brands,
+            verbose_name='Бренд',
+            on_delete=models.PROTECT,
     )
 
     product_type = models.ForeignKey(
@@ -56,7 +62,10 @@ class SpentProducts(models.Model):
             on_delete = models.PROTECT,
     )
 
-    number = models.IntegerField(
+    number = models.CharField(
+            null=True,
+            blank=True,
+            max_length=20,
             verbose_name = "Номер продукта"
     )
 
@@ -73,8 +82,12 @@ class SpentProducts(models.Model):
             verbose_name='Пользователь',
             on_delete=models.SET(get_sentinel_user),
     )
+
     def __str__(self):
-        return f'{self.product_type} {self.number} {self.date}'
+        if (self.number):
+            return f'{self.product_type} {self.number} {self.date}'
+        else:
+            return f'{self.product_type} {self.date}'
 
 
     class Meta:
